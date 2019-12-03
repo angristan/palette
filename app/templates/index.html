@@ -1,0 +1,23 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Palette - Upload new File</title>
+</head>
+<body>
+    <h1>Upload new File</h1>
+    <form method=post action="/upload" enctype=multipart/form-data>
+        {{ form.hidden_tag() }}
+
+        {{ form.upload }}
+        {% for error in form.upload.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+
+        {{ form.submit() }}
+    </form>
+</body>
+</html>
