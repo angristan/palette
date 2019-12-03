@@ -1,6 +1,6 @@
 import cv2
 from sklearn.cluster import KMeans
-
+import numpy as np
 
 def kmeans(img, k):
     # the number of clusters indicate how many leading colors we want (k of k-means)
@@ -27,4 +27,7 @@ def get_tints(filepath, n_tints):
 
     model = kmeans(img, n_tints)
 
-    return model.cluster_centers_.tolist()
+    tints_float = np.array(model.cluster_centers_.tolist())
+    tints_int = tints_float.astype(int)
+
+    return tints_int
