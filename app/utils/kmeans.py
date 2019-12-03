@@ -2,9 +2,9 @@ import cv2
 from sklearn.cluster import KMeans
 
 
-def kmeans(img, n_clusters):
+def kmeans(img, k):
     # the number of clusters indicate how many leading colors we want (k of k-means)
-    model = KMeans(n_clusters=n_clusters, init='random', random_state=88)
+    model = KMeans(n_clusters=k, init='random', random_state=88)
     model.fit(img)
 
     return model
@@ -22,9 +22,9 @@ def transform_img(filepath):
 
     return img
 
-def get_tints(filepath):
+def get_tints(filepath, n_tints):
     img = transform_img(filepath)
 
-    model = kmeans(img, 5)
+    model = kmeans(img, n_tints)
 
     return model.cluster_centers_.tolist()
