@@ -20,10 +20,52 @@
         {{ form.submit() }}
     </form>
 
-    <pre>
+
         {% if tints is not none %}
-            {{ tints }}
+
+        <ul id="tints">
+
+        </ul>
+            <script>
+                function componentToHex(c) {
+                    var hex = c.toString(16);
+                    return hex.length == 1 ? "0" + hex : hex;
+                }
+
+                function rgbToHex(r, g, b) {
+                    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+                }
+
+                const tints = [
+                {% for tint in tints %}
+                    [
+                    {% for tint_value in tint %}
+                        {{ tint_value}}
+                        {{ "," if not loop.last }}
+                    {% endfor %}
+                    ]
+                    {{ "," if not loop.last }}
+                {% endfor %}
+                ]
+
+                let hex_colors = [];
+
+                for(i = 0; i < tints.length; i++) {
+                    hex_colors.push(rgbToHex(tints[i][0], tints[i][1], tints[i][2]))
+                }
+
+                const tints_list = document.getElementById('tints');
+
+                for(color = 0; color < hex_colors.length; color++) {
+                    const node = document.createElement("li");
+                    const textnode = document.createTextNode(hex_colors[color]);
+                    node.appendChild(textnode);
+                    node.style.color = hex_colors[color];
+                    tints_list.appendChild(node);
+                }
+
+            </script>
         {% endif %}
-    </pre>
+
 </body>
 </html>
