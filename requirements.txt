@@ -12,3 +12,4 @@ Flask-Bootstrap==3.3.7.1
 # requirements for Heroku
 psycopg2==2.7.3.1
 gunicorn==19.7.1
+webcolors==1.10

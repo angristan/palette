@@ -8,6 +8,8 @@ from app import app
 from app import images
 from app.forms import UploadForm
 from app.utils.kmeans_scratch import get_colors
+from app.utils.knn import Knn
+from webcolors import hex_to_rgb
 from flask.json import jsonify
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
@@ -38,8 +40,19 @@ def palette():
         filename = secure_filename(file.filename)
         filepath = os.path.join(app.config['UPLOADS_DEFAULT_DEST'], filename)
         file.save(filepath)
-        tints = get_colors(filepath, 5)
-        resp = jsonify({'message' : 'File successfully uploaded', 'colors' : tints})
+        color_hex = get_colors(filepath, 5)
+        print(color_hex)
+        color_names = [];
+
+        for color in color_hex:
+            r,g,b = hex_to_rgb(color)
+            name = Knn().get_color_name(r,g,b)
+            color_names.append(name)
+
+        print(color_names)
+
+
+        resp = jsonify({'message' : 'File successfully uploaded', 'colors' : color_hex, 'names': color_names})
         resp.status_code = 201
         return resp
     else:

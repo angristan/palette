@@ -31,7 +31,7 @@ form.onsubmit = function(event) {
 
       for(color = 0; color < response.colors.length; color++) {
           const node = document.createElement("li");
-          const textnode = document.createTextNode(response.colors[color]);
+          const textnode = document.createTextNode(response.colors[color] + ' - ' + response.names[color]);
           node.appendChild(textnode);
           node.style.color = response.colors[color];
           tints_list.appendChild(node);
