@@ -6,27 +6,13 @@
 
     <div class="row">
         <div class="col-md-4">
-            {{ wtf.quick_form(form, action='/upload', method='POST') }}
+            {{ wtf.quick_form(form, action='/upload', method='POST', id="file-form" )}}
+            <p id="progressdiv"><progress max="100" value="0" id="progress" style="display: none;"></progress></p>
         </div>
     </div>
-
 
     {% if tints is not none %}
 
     <ul id="tints"> </ul>
-        <script>
-            let hex_colors = {{tints|safe}};
-
-            const tints_list = document.getElementById('tints');
-
-            for(color = 0; color < hex_colors.length; color++) {
-                const node = document.createElement("li");
-                const textnode = document.createTextNode(hex_colors[color]);
-                node.appendChild(textnode);
-                node.style.color = hex_colors[color];
-                tints_list.appendChild(node);
-            }
-
-        </script>
     {% endif %}
 {% endblock %}
