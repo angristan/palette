@@ -16,7 +16,7 @@ if app.config['LOG_TO_STDOUT']:
 else:
     if not os.path.exists('logs'):
         os.mkdir('logs')
-    file_handler = RotatingFileHandler('logs/microblog.log',
+    file_handler = RotatingFileHandler('logs/api.log',
                                         maxBytes=10240, backupCount=10)
     file_handler.setFormatter(logging.Formatter(
         '%(asctime)s %(levelname)s: %(message)s '
