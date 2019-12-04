@@ -7,7 +7,9 @@
     <div class="row">
         <div class="col-md-4">
             {{ wtf.quick_form(form, action='/upload', method='POST', id="file-form" )}}
-            <p id="progressdiv"><progress max="100" value="0" id="progress" style="display: none;"></progress></p>
+            <div id="progress-div" class="progress" style="display: none;">
+                    <div id="progress-bar" class="progress-bar progress-bar-striped" role="progressbar" style="width: 0%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
         </div>
     </div>
 

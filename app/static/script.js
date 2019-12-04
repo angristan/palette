@@ -1,13 +1,14 @@
-var form = document.getElementById('file-form');
-var fileSelect = document.getElementById('upload');
-var uploadButton = document.getElementById('submit');
+const form = document.getElementById('file-form');
+const fileSelect = document.getElementById('upload');
+const uploadButton = document.getElementById('submit');
+const progressbar = document.getElementById('progress-bar');
+const progressdiv = document.getElementById('progress-div');
 
 form.onsubmit = function(event) {
   event.preventDefault();
-  var progress = document.getElementById('progress');
-  var progressdiv = document.getElementById('progressdiv');
-  progress.style.display = "block";
+  progressdiv.style.display = "block";
   uploadButton.innerHTML = 'Uploading...';
+
   var files = fileSelect.files;
   var formData = new FormData();
   var file = files[0];
@@ -20,7 +21,6 @@ form.onsubmit = function(event) {
   xhr.onload = function (e) {
     if (xhr.status === 201) {
       uploadButton.innerHTML = 'Upload';
-      progressdiv.innerHTML = "<h3>Sucess</h3>";
 
       const response = JSON.parse(xhr.response);
       console.log(response.colors)
@@ -43,7 +43,9 @@ form.onsubmit = function(event) {
 function update_progress(e){
     if (e.lengthComputable){
         var percentage = Math.round((e.loaded/e.total)*100);
-        progress.value = percentage;
+
+        progressbar.style.width = percentage + '%';
+
         uploadButton.innerHTML = 'Upload '+percentage+'%';
         console.log("percent " + percentage + '%' );
     }
