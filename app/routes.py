@@ -7,7 +7,7 @@ from werkzeug import redirect, secure_filename
 from app import app
 from app import images
 from app.forms import UploadForm
-from app.utils.kmeans import get_tints
+from app.utils.kmeans_scratch import get_colors
 
 
 @app.route('/')
@@ -27,7 +27,7 @@ def upload():
         f.save(filepath)
 
         # Compute the 5 major tints
-        tints = get_tints(filepath, 5)
+        tints = get_colors(filepath, 5)
 
         form = UploadForm()
         return render_template('index.html', form=form, tints=tints)

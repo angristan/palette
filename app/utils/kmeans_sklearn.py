@@ -12,6 +12,7 @@ def kmeans(img, k):
 
 def transform_img(filepath):
     img = cv2.imread(filepath)
+    img = cv2.resize(img,(500,500))
 
     # by default, cv2 uses BGR so we need to change it to RGB
     img_data = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -30,4 +31,8 @@ def get_tints(filepath, n_tints):
     tints_float = np.array(model.cluster_centers_.tolist())
     tints_int = tints_float.astype(int)
 
+    print(tints_int)
+
     return tints_int
+
+# somehow the colors returned are not very accurate...
