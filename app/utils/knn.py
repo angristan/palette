@@ -1,5 +1,6 @@
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn import preprocessing
+import pandas as pd
 
 class Knn:
 
@@ -14,92 +15,12 @@ class Knn:
             self.target_colors = None
 
     def prepare_dataset(self):
-        dataset = [
-            {
-                'name': 'red',
-                'r': 255,
-                'g': 0,
-                'b': 0,
-            },
-            {
-                'name': 'orange',
-                'r': 255,
-                'g': 128,
-                'b': 0,
-            },
-            {
-                'name': 'yellow',
-                'r': 255,
-                'g': 255,
-                'b': 0,
-            },
-            {
-                'name': 'green',
-                'r': 128,
-                'g': 255,
-                'b': 0,
-            },
-            {
-                'name': 'green',
-                'r': 0,
-                'g': 255,
-                'b': 0,
-            },
-            {
-                'name': 'green',
-                'r': 0,
-                'g': 255,
-                'b': 128,
-            },
-            {
-                'name': 'blue',
-                'r': 0,
-                'g': 255,
-                'b': 255,
-            },
-            {
-                'name': 'blue',
-                'r': 0,
-                'g': 128,
-                'b': 255,
-            },
-            {
-                'name': 'blue',
-                'r': 0,
-                'g': 0,
-                'b': 255,
-            },
-            {
-                'name': 'purple',
-                'r': 127,
-                'g': 0,
-                'b': 255,
-            },
-            {
-                'name': 'pink',
-                'r': 255,
-                'g': 0,
-                'b': 255,
-            },
-            {
-                'name': 'pink',
-                'r': 255,
-                'g': 0,
-                'b': 127,
-            },
-            {
-                'name': 'grey',
-                'r': 128,
-                'g': 128,
-                'b': 128,
-            },
-        ]
+        data = pd.read_csv("dataset/wikipedia_color_names.csv")
 
-        for color in dataset:
-            self.color_names.append(color['name'])
-            self.r.append(color['r'])
-            self.g.append(color['g'])
-            self.b.append(color['b'])
+        self.color_names = data['name'].tolist()
+        self.r = data['red'].tolist()
+        self.g = data['green'].tolist()
+        self.b = data['blue'].tolist()
 
     def encode_dataset(self):
         self.prepare_dataset()
@@ -120,7 +41,7 @@ class Knn:
         self.target_colors = dict(zip(self.labels, self.color_names))
         # print(self.target_colors)
 
-        self.model = KNeighborsClassifier(n_neighbors=1)
+        self.model = KNeighborsClassifier(n_neighbors=3)
 
         self.model.fit(self.features, self.labels)
 
