@@ -3,6 +3,7 @@ const fileSelect = document.getElementById('upload');
 const uploadButton = document.getElementById('submit');
 const progressbar = document.getElementById('progress-bar');
 const progressdiv = document.getElementById('progress-div');
+const tintslistdiv = document.getElementById('tints-list');
 
 form.onsubmit = function(event) {
   event.preventDefault();
@@ -25,6 +26,7 @@ form.onsubmit = function(event) {
       const response = JSON.parse(xhr.response);
       console.log(response.colors)
 
+      tintslistdiv.style.display = 'block';
       const tints_list = document.getElementById('tints');
 
       for(color = 0; color < response.colors.length; color++) {

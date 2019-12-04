@@ -2,19 +2,21 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block app_content %}
-    <h1>Upload new File</h1>
+    <h1>Get color palette from an image file</h1>
+
 
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-6">
             {{ wtf.quick_form(form, action='/upload', method='POST', id="file-form" )}}
             <div id="progress-div" class="progress" style="display: none;">
                     <div id="progress-bar" class="progress-bar progress-bar-striped" role="progressbar" style="width: 0%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
         </div>
+        <div class="col-6" id="tints-list" style="display: none;">
+                <h2>Here are the major tints in this image:</h2>
+                <ul id="tints"> </ul>
+            </div>
     </div>
 
-    {% if tints is not none %}
 
-    <ul id="tints"> </ul>
-    {% endif %}
 {% endblock %}
