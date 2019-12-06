@@ -8,7 +8,7 @@ from app import app
 
 
 class UploadForm(FlaskForm):
-    upload = FileField('image', validators=[
+    upload = FileField('Choose an image...', validators=[
         FileRequired(),
         FileAllowed(images, 'Images only!')
     ])

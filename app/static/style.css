@@ -18,3 +18,8 @@ code {
 body {
   min-height: 100vh;
 }
+
+.custom-file,
+#submit {
+  margin: 0em 1em;
+}

@@ -66,6 +66,10 @@
     <!-- Optional JavaScript -->
     {{ bootstrap.load_js() }}
     {{ render_static('js', 'script.js') }}
+    <script src="https://unpkg.com/bootstrap-input-spinner@1.12.7/src/bootstrap-input-spinner.js"></script>
+    <script>
+        $("input[type='number']").inputSpinner()
+    </script>
     {% endblock %}
   </body>
 </html>
