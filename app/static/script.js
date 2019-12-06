@@ -3,6 +3,7 @@ const fileSelect = document.getElementById('upload');
 const uploadButton = document.getElementById('submit');
 const progressbar = document.getElementById('progress-bar');
 const progressdiv = document.getElementById('progress-div');
+const tintslisttable = document.getElementById('tints');
 const tintslistdiv = document.getElementById('tints-list');
 
 form.onsubmit = function (event) {
@@ -27,14 +28,24 @@ form.onsubmit = function (event) {
       console.log(response.colors)
 
       tintslistdiv.style.display = 'block';
-      const tints_list = document.getElementById('tints');
 
       for (color = 0; color < response.colors.length; color++) {
-        const node = document.createElement("li");
-        const textnode = document.createTextNode(response.colors[color] + ' - ' + response.names[color]);
-        node.appendChild(textnode);
-        node.style.color = response.colors[color];
-        tints_list.appendChild(node);
+        const tr = document.createElement("tr");
+        const th = document.createElement("th");
+        const tdColorValue = document.createElement("td");
+        const tdColorName = document.createElement("td");
+
+        th.scope = "row";
+        th.innerText = color;
+        tdColorValue.innerText = response.colors[color];
+        tdColorName.innerText = response.names[color];
+
+        tr.appendChild(th);
+        tr.appendChild(tdColorValue);
+        tr.appendChild(tdColorName);
+        tr.style.color = response.colors[color];
+
+        tintslisttable.appendChild(tr);
       }
     } else {
       alert('An error occurred!');
