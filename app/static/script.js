@@ -1,6 +1,5 @@
 const form = document.getElementById('file-form');
 const fileSelect = document.getElementById('upload');
-const uploadButton = document.getElementById('submit');
 const progressbar = document.getElementById('progress-bar');
 const progressdiv = document.getElementById('progress-line');
 const tintslisttable = document.getElementById('tints');
@@ -19,11 +18,12 @@ form.onsubmit = function (event) {
   // This will not change anything for the first upload when the page is clean
   tintslistdiv.style.display = 'none';
   tintslisttable.innerHTML = '';
+  statusBadge.innerText = "Uploading..."
+  statusBadge.className = "badge badge-primary col-sm-2"
 
+  // Show progress bar for the first upload
   progressdiv.style.display = "flex";
-  uploadButton.innerHTML = 'Uploading...';
-  statusBadge.innerText = "Processing..."
-  statusBadge.className = "badge badge-warning col-sm-2"
+
 
   const clusters = document.getElementById('clusters');
   const files = fileSelect.files;
@@ -38,8 +38,6 @@ form.onsubmit = function (event) {
   }
   xhr.onload = function (e) {
     if (xhr.status === 201) {
-      uploadButton.innerHTML = 'Upload';
-
       const response = JSON.parse(xhr.response);
       console.log(response.colors)
 
@@ -79,8 +77,11 @@ function update_progress(e) {
 
     progressbar.style.width = percentage + '%';
 
-    uploadButton.innerHTML = 'Upload ' + percentage + '%';
-    console.log("percent " + percentage + '%');
+    if (percentage == 100) {
+      // When upload is done, the backend is working...
+      statusBadge.innerText = "Processing..."
+      statusBadge.className = "badge badge-warning col-sm-2"
+    }
   }
   else {
     console.log("Unable to compute progress information since the total size is unknown");
