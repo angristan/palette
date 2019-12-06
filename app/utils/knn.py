@@ -4,16 +4,6 @@ import pandas as pd
 
 class Knn:
 
-    def __init__(self):
-            self.r = []
-            self.g = []
-            self.b = []
-            self.color_names = []
-            self.features = list()
-            self.labels = None
-            self.model = None
-            self.target_colors = None
-
     def prepare_dataset(self):
         data = pd.read_csv("dataset/wikipedia_color_names.csv")
 
