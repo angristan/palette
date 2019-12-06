@@ -9,15 +9,22 @@ const statusBadge = document.getElementById('badge-status');
 
 form.onsubmit = function (event) {
   event.preventDefault();
+
+  if (fileSelect.files.length === 0) {
+    return;
+  }
+
   progressdiv.style.display = "flex";
   uploadButton.innerHTML = 'Uploading...';
   statusBadge.innerText = "Processing..."
   statusBadge.className = "badge badge-warning col-sm-2"
 
+  const clusters = document.getElementById('clusters');
   const files = fileSelect.files;
   const formData = new FormData();
   const file = files[0];
   formData.append('image', file, file.name);
+  formData.append('clusters', clusters.value);
   const xhr = new XMLHttpRequest();
   xhr.open('POST', 'get_palette', true);
   xhr.upload.onprogress = function (e) {
@@ -39,7 +46,7 @@ form.onsubmit = function (event) {
         const tdColorName = document.createElement("td");
 
         th.scope = "row";
-        th.innerText = color;
+        th.innerText = color + 1;
         tdColorValue.innerText = response.colors[color];
         tdColorName.innerText = response.names[color];
 

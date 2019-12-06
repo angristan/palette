@@ -1,5 +1,6 @@
 from flask_uploads import IMAGES, UploadSet, configure_uploads
 from flask_wtf import FlaskForm
+from wtforms import IntegerField
 from flask_wtf.file import FileField, FileAllowed, FileRequired
 from wtforms.fields.simple import SubmitField
 
@@ -12,4 +13,5 @@ class UploadForm(FlaskForm):
         FileRequired(),
         FileAllowed(images, 'Images only!')
     ])
+    clusters = IntegerField('clusters',)
     submit = SubmitField('Analyse image')

@@ -1,4 +1,5 @@
 import os
+import numbers
 
 from flask import render_template, request, abort
 from flask.helpers import url_for
@@ -26,6 +27,11 @@ def index():
 
 @app.route('/get_palette', methods=['POST'])
 def palette():
+    print(type(request.form.get('clusters')))
+    if 'clusters' not in request.form:
+        resp = jsonify({'message' : 'No number of clusters specified'})
+        resp.status_code = 400
+        return resp
     if 'image' not in request.files:
         resp = jsonify({'message' : 'No file part in the request'})
         resp.status_code = 400
@@ -39,7 +45,8 @@ def palette():
         filename = secure_filename(file.filename)
         filepath = os.path.join(app.config['UPLOADS_DEFAULT_DEST'], filename)
         file.save(filepath)
-        color_hex = get_colors(filepath, 5)
+        cluster_n = int(request.form.get('clusters'))
+        color_hex = get_colors(filepath, cluster_n)
         print(color_hex)
         color_names = [];
 
