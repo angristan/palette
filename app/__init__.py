@@ -5,9 +5,13 @@ from flask import Flask
 from config import Config
 from flask_bootstrap import Bootstrap
 from logging.handlers import RotatingFileHandler
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 app.config.from_object(Config)
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 if app.config['LOG_TO_STDOUT']:
     stream_handler = logging.StreamHandler()
@@ -29,4 +33,4 @@ bootstrap = Bootstrap(app)
 images = UploadSet('images', IMAGES)
 configure_uploads(app, images)
 
-from app import routes
+from app import routes,models
