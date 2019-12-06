@@ -10,9 +10,15 @@ const statusBadge = document.getElementById('badge-status');
 form.onsubmit = function (event) {
   event.preventDefault();
 
+  // If no file has been selected, don't do anything
   if (fileSelect.files.length === 0) {
     return;
   }
+
+  // Hide and clear result table forsubsequent uploads
+  // This will not change anything for the first upload when the page is clean
+  tintslistdiv.style.display = 'none';
+  tintslisttable.innerHTML = '';
 
   progressdiv.style.display = "flex";
   uploadButton.innerHTML = 'Uploading...';
