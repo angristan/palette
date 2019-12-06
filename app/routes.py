@@ -19,7 +19,6 @@ def allowed_file(filename):
 
 
 @app.route('/')
-@app.route('/index')
 def index():
     form = UploadForm()
     return render_template('index.html', form=form)

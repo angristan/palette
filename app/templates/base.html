@@ -1,49 +1,71 @@
-{% extends 'bootstrap/base.html' %}
+{% from 'bootstrap/nav.html' import render_nav_item %}
+{% from 'bootstrap/utils.html' import render_static %}
 
-{% block title %}
-    Palette
-{% endblock %}
+<!doctype html>
+<html lang="en">
+  <head>
+    {% block head %}
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-{% block navbar %}
-    <nav class="navbar navbar-default">
+    {% block styles %}
+    <!-- Bootstrap CSS -->
+    {{ bootstrap.load_css() }}
+    <!-- Custom CSS -->
+    {{ render_static('css', 'style.css') }}
+    {% endblock %}
+
+    <title>Palette</title>
+    {% endblock %}
+  </head>
+  <body class="d-flex flex-column h-100">
+    <header>
+      {% block navbar %}
+      <!-- Fixed navbar -->
+      <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
         <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="{{ url_for('index') }}">Palette</a>
-            </div>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <!-- <li><a href="{{ url_for('index') }}">Get colors</a></li>
-                    <li><a href="">Train</a></li> -->
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-
-                    <li><a href="https://github.com/angristan/palette">GitHub</a></li>
-                </ul>
-            </div>
+          <a class="navbar-brand" href="{{ url_for('index') }}">Palette</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item active">
+                <!-- <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a> -->
+                {{ render_nav_item('index', 'Home') }}
+              </li>
+              <!-- <li class="nav-item">
+                <a class="nav-link" href="#">Train</a>
+              </li> -->
+            </ul>
+            <span class="navbar-text">
+              <a href="https://github.com/angristan/palette">GitHub</a>
+            </span>
+          </div>
         </div>
-    </nav>
-{% endblock %}
+      </nav>
+    {% endblock %}
+    </header>
 
-{% block content %}
-    <div class="container">
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for message in messages %}
-            <div class="alert alert-info" role="alert">{{ message }}</div>
-            {% endfor %}
-        {% endif %}
-        {% endwith %}
+    <!-- Begin page content -->
+    {% block content %}{% endblock %}
 
-        {# application content needs to be provided in the app_content block #}
-        {% block app_content %}{% endblock %}
-    </div>
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
-{% endblock %}
+    {% block footer %}
+    <footer class="footer mt-auto py-3">
+      <div class="container">
+        <span class="text-muted">
+          Project for the AI/ML class at Hanyang University. Find the code on
+          <a href="https://github.com/angristan/palette">GitHub.</a>
+        </span>
+      </div>
+    </footer>
+    {% endblock %}
 
-
+    {% block scripts %}
+    <!-- Optional JavaScript -->
+    {{ bootstrap.load_js() }}
+    {{ render_static('js', 'script.js') }}
+    {% endblock %}
+  </body>
+</html>
