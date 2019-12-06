@@ -2,14 +2,17 @@ const form = document.getElementById('file-form');
 const fileSelect = document.getElementById('upload');
 const uploadButton = document.getElementById('submit');
 const progressbar = document.getElementById('progress-bar');
-const progressdiv = document.getElementById('progress-div');
+const progressdiv = document.getElementById('progress-line');
 const tintslisttable = document.getElementById('tints');
 const tintslistdiv = document.getElementById('tints-list');
+const statusBadge = document.getElementById('badge-status');
 
 form.onsubmit = function (event) {
   event.preventDefault();
-  progressdiv.style.display = "block";
+  progressdiv.style.display = "flex";
   uploadButton.innerHTML = 'Uploading...';
+  statusBadge.innerText = "Processing..."
+  statusBadge.className = "badge badge-warning col-sm-2"
 
   const files = fileSelect.files;
   const formData = new FormData();
@@ -47,8 +50,12 @@ form.onsubmit = function (event) {
 
         tintslisttable.appendChild(tr);
       }
+
+      statusBadge.innerText = "Done."
+      statusBadge.className = "badge badge-success col-sm-2"
     } else {
-      alert('An error occurred!');
+      statusBadge.innerText = "Error."
+      statusBadge.className = "badge badge-danger col-sm-2"
     }
   };
   xhr.send(formData);

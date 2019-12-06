@@ -23,3 +23,13 @@ body {
 #submit {
   margin: 0em 1em;
 }
+
+.progress-line {
+  display: flex;
+  padding-right: 1em;
+}
+
+#progress-div {
+  margin-right: 1em;
+  padding: 0;
+}
