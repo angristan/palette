@@ -29,7 +29,6 @@ class Knn:
         self.encode_dataset()
 
         self.target_colors = dict(zip(self.labels, self.color_names))
-        # print(self.target_colors)
 
         self.model = KNeighborsClassifier(n_neighbors=3)
 

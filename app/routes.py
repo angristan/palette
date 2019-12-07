@@ -8,7 +8,7 @@ from werkzeug import redirect, secure_filename
 from app import app
 from app import images
 from app.forms import UploadForm
-from app.utils.kmeans import get_tints
+from app.utils.kmeans import Kmeans
 from app.utils.knn import Knn
 from webcolors import hex_to_rgb
 from flask.json import jsonify
@@ -27,7 +27,6 @@ def index():
 
 @app.route('/get_palette', methods=['POST'])
 def palette():
-    print(type(request.form.get('clusters')))
     if 'clusters' not in request.form:
         resp = jsonify({'message' : 'No number of clusters specified'})
         resp.status_code = 400
@@ -46,7 +45,8 @@ def palette():
         filepath = os.path.join(app.config['UPLOADS_DEFAULT_DEST'], filename)
         file.save(filepath)
         cluster_n = int(request.form.get('clusters'))
-        color_hex = get_tints(filepath, cluster_n)
+        kmeans = Kmeans(filepath,cluster_n)
+        color_hex = kmeans.get_tints()
         print(color_hex)
         color_names = [];
 
