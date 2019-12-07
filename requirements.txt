@@ -1,6 +1,6 @@
 Flask==1.1.1
 opencv-python==4.1.2.30
-opencv-python-headless
+opencv-python-headless==4.1.2.30
 Werkzeug==0.16.0
 sklearn==0.0
 python-dotenv==0.10.3
@@ -9,8 +9,8 @@ WTForms==2.2.1
 Flask-Uploads==0.2.1
 numpy==1.17.3
 Pillow==6.2.1
-psycopg2==2.7.3.1
-gunicorn==19.7.1
+psycopg2==2.8.4
+gunicorn==20.0.4
 webcolors==1.10
 pandas==0.25.2
 Flask-SQLAlchemy==2.4.1
