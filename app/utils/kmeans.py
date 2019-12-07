@@ -10,10 +10,14 @@ class Kmeans:
     def __init__(self, imagepath, clusters=3):
         self.clusters = clusters
         self.imagepath = imagepath
+        self.img = None
+        self.colors = None
 
     def clusterize(self):
         # the number of clusters indicate how many leading colors we want (k of k-means)
-        self.model = KMeans(n_clusters=self.clusters, init='random', random_state=88)
+        # we use k-means++ to ensure ensures a smarter initialization of the centroids
+        # and improve the quality of the clustering
+        self.model = KMeans(n_clusters=self.clusters, init='k-means++')
         self.model.fit(self.img)
 
     def transform_img(self):
