@@ -8,7 +8,7 @@ from werkzeug import redirect, secure_filename
 from app import app
 from app import images
 from app.forms import UploadForm
-from app.utils.kmeans_sklearn import get_tints
+from app.utils.kmeans import get_tints
 from app.utils.knn import Knn
 from webcolors import hex_to_rgb
 from flask.json import jsonify
