@@ -8,7 +8,7 @@ from werkzeug import redirect, secure_filename
 from app import app
 from app import images
 from app.forms import UploadForm
-from app.utils.kmeans_scratch import get_colors
+from app.utils.kmeans_sklearn import get_tints
 from app.utils.knn import Knn
 from webcolors import hex_to_rgb
 from flask.json import jsonify
@@ -46,7 +46,7 @@ def palette():
         filepath = os.path.join(app.config['UPLOADS_DEFAULT_DEST'], filename)
         file.save(filepath)
         cluster_n = int(request.form.get('clusters'))
-        color_hex = get_colors(filepath, cluster_n)
+        color_hex = get_tints(filepath, cluster_n)
         print(color_hex)
         color_names = [];
 

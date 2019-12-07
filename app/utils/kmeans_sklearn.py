@@ -1,6 +1,7 @@
 import cv2
-from sklearn.cluster import KMeans
 import numpy as np
+from sklearn.cluster import KMeans
+from webcolors import rgb_to_hex
 
 def kmeans(img, k):
     # the number of clusters indicate how many leading colors we want (k of k-means)
@@ -15,11 +16,10 @@ def transform_img(filepath):
     img = cv2.resize(img,(500,500))
 
     # by default, cv2 uses BGR so we need to change it to RGB
-    img_data = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    r, g, b = cv2.split(img_data)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
     # row * column, and number of color channels (3 because of RGB)
-    img = img.reshape((img_data.shape[0] * img_data.shape[1], 3))
+    img = img.reshape((img.shape[0] * img.shape[1], 3))
 
     return img
 
@@ -28,11 +28,6 @@ def get_tints(filepath, n_tints):
 
     model = kmeans(img, n_tints)
 
-    tints_float = np.array(model.cluster_centers_.tolist())
-    tints_int = tints_float.astype(int)
+    dominant_colors_rgb = model.cluster_centers_.astype(int)
 
-    print(tints_int)
-
-    return tints_int
-
-# somehow the colors returned are not very accurate...
+    return list(map(rgb_to_hex, tuple(dominant_colors_rgb)))
