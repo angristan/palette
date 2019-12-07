@@ -15,3 +15,4 @@ pandas==0.25.2
 Flask-SQLAlchemy==2.4.1
 Flask-Migrate==2.5.2
 Bootstrap-Flask==1.2.0
+imutils==0.5.3

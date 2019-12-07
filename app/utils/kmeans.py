@@ -1,5 +1,7 @@
 import cv2
 import numpy as np
+import imutils
+
 from sklearn.cluster import KMeans
 from webcolors import rgb_to_hex
 
@@ -13,7 +15,7 @@ def kmeans(img, k):
 
 def transform_img(filepath):
     img = cv2.imread(filepath)
-    img = cv2.resize(img,(500,500))
+    img = imutils.resize(img, width=300)
 
     # by default, cv2 uses BGR so we need to change it to RGB
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
