@@ -1,7 +1,9 @@
 # Palette
 
-Wesbite built using Flask.
+Palette is a website where you can upload an image and get the dominant colors (using k-means clustering) as well as the associated color names (using k-nearest neighbor).
 
-Extract color palette from an image with k-means clustering.
+This is a project for the *Introduction to Artificial Intelligence* at Hanyang University under professor Youngjoon Won.
 
-Associate RGB color to a color name using classification by k-nearest neighbors algorithm (k-NN) with pandas and scikit-learn.
+Motivation, technical details and methodology cam be found in our so-called "[blog post](doc/blog)".
+
+![](https://i.imgur.com/VhBKYdA.png)
