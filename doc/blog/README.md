@@ -26,6 +26,8 @@ To achieve this, we use multiple algorithms. The first one will extract the majo
 ## II. Datasets
 - Describing your dataset
 
+### Extracting colors: converting an image into a usable dataset
+
 To analyze the colors of an image, we only need the image itself, which we can consider as our dataset. As we explain in `III.`, we use the k-means clustering algorithm for this matter.
 
 An image can be broken down into a two dimensional array for pixels, defined by its height and width, in pixels. Each pixel itself is a 3 dimensional array with a red, green and blue (RGB) value.
@@ -50,6 +52,123 @@ The RGB24 model is composed of 3 color channel each holding 8 bits of data, a va
 *Images with pixels of different bit depth also known as color depth. The standard is 24-bits.*
 
 There are other color models but the second most popular is the CMY color model (for Cyan, Magenta and Yellow), which is a subtractive color model as opposed to RGB which is additive.
+
+To extract the dominant colors from an image we don't care about the placement of the pixels in the image, but only their color. Thus we can convert the image into an array of RGB values.
+
+Let's take this image as a example:
+
+![](https://i.imgur.com/8EfDXN1.png)
+
+*3x3 image*
+
+This image is our dataset, and we will prepare it for our clustering algorithm.
+
+We use OpenCV in Python to manipulate the image:
+
+```py
+import cv2
+```
+
+When reading a color image file, OpenCV `imread()` reads as a NumPy array `ndarray` of row (height) x column (width) x color (3). The order of color is BGR (blue, green, red). So we have to convert it to RGB.
+
+```py
+img = cv2.imread('3x3.png')
+
+img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+```
+
+If we `print(img)` now we will have a 3D array as expected:
+
+```py
+[[[255   0   0]
+  [255   0   0]
+  [255   0   0]]
+
+ [[  0 255   0]
+  [  0 255   0]
+  [  0 255   0]]
+
+ [[  0   0 255]
+  [  0   0 255]
+  [  0   0 255]]]
+```
+
+Since we don't care about the pixel placement we can convert the image to a 2D array, which can be seen as reshaping the image from 3x3 pixels to 1x9 pixels.
+
+```py
+img = img.reshape((img_data.shape[0] * img_data.shape[1], 3))
+```
+
+Now by issuing `print(img)` we can attest that we have prepared our image for the clustering.
+
+```py
+[[  0   0 255]
+ [  0   0 255]
+ [  0   0 255]
+ [  0 255   0]
+ [  0 255   0]
+ [  0 255   0]
+ [255   0   0]
+ [255   0   0]
+ [255   0   0]]
+```
+
+### Associating color values with color names
+
+With the methodology described below we extract a certain number of dominant colors as RGB or Hexadecimal values. Since this not something that will help our user (what's the good of knowing that `123,43,234` is the dominant tint in an image?), we have to provide them with a name corresponding to each color.
+
+To that end we use a CSV dataset available [here](../../dataset/wikipedia_color_names.csv) containing 1298 colors.
+
+Here is an extract:
+
+```csv
+"name","hex","red","green","blue","hue","hsl_s","hsl_l, hsv_s, hsv_v"
+"Absolute zero","#0048BA",0,72,186,217.0,100.0,37.0
+"Acid green","#B0BF1A",176,191,26,65.0,76.0,43.0
+"Aero","#7CB9E8",124,185,232,206.0,70.0,70.0
+"Aero blue","#C9FFE5",201,255,229,151.0,100.0,89.0
+"African violet","#B284BE",178,132,190,288.0,31.0,63.0
+```
+
+That dataset originally comes from [Wikipedia (List of colors)](https://en.wikipedia.org/wiki/Lists_of_colors) and has been converted to CSV by Dilum Ranatunga and published on [data.world](https://data.world/dilumr/color-names).
+
+We need to import and prepare that dataset because we only need the first four columns in the CSV file.
+
+To do so we use the [pandas]() library.
+
+```py
+import pandas as pd
+```
+
+First we convert the CSV file to a `pandas.core.frame.DataFrame` object to easily extract data.
+
+```py
+data = pd.read_csv("wikipedia_color_names.csv")
+```
+
+We can verify the import with the `data.head()` method:
+
+```py
+             name      hex  red  green  blue    hue  hsl_s  hsl_l, hsv_s, hsv_v
+0   Absolute zero  #0048BA    0     72   186  217.0  100.0                 37.0
+1      Acid green  #B0BF1A  176    191    26   65.0   76.0                 43.0
+2            Aero  #7CB9E8  124    185   232  206.0   70.0                 70.0
+3       Aero blue  #C9FFE5  201    255   229  151.0  100.0                 89.0
+4  African violet  #B284BE  178    132   190  288.0   31.0                 63.0
+```
+
+Then we extract the name and RGB values into 4 variables.
+
+```py
+color_names = data['name'].tolist()
+r = data['red'].tolist()
+g = data['green'].tolist()
+b = data['blue'].tolist()
+```
+
+We are careful to keep the order of the data when converting them to list, otherwise the colors will be mixed.
+
+Now that we have extracted the data we needed, we will be able to use it for our classifying algorithm below.
 
 ## III. Methodology
 
