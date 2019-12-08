@@ -134,7 +134,7 @@ That dataset originally comes from [Wikipedia (List of colors)](https://en.wikip
 
 We need to import and prepare that dataset because we only need the first four columns in the CSV file.
 
-To do so we use the [pandas]() library.
+To do so we use the [pandas](https://pandas.pydata.org/) library.
 
 ```py
 import pandas as pd
@@ -183,6 +183,32 @@ Now that we have extracted the data we needed, we will be able to use it for our
 - Heroku with GitHub Actions
 
 ### Extracting colors: k-means clustering
+
+To explain why we chose k-means for our project we have to go back to what we try to achieve. After processing our image as explained above, we want to extract `x` dominant colors. However as we saw earlier using the RGB 24-bits color model we has 16,777,216 (256<sup>3</sup> or 2<sup>24</sup>) different colors, most of which being slightly different tints.
+
+To understand the extent of the spectrum, let's look at this rough example:
+
+![](https://i.imgur.com/CWYX7iD.png)
+
+One would classify both of these color as blue, right? The second color has +100 to each color channel, so that means there is 100<sup>3</sup> = 1 million tints between these two blue colors!
+
+To be specific, if we want the *most present colors* in an image, we could do a simple statistical analysis of the RGB values of all the pixels. But the result would be extremely difficult to interpret, because an image of a blue sky can contain a million different tints of blue and be made of unique pixels, thus without any *exact* dominant color.
+
+![](https://miro.medium.com/max/1370/1*pxlI1gPzYHE0ZVaTsg3n2w.png)
+
+*This image is clearly blue, but a statistical analysis would not be as decisive.*
+
+But that's not how humans perceive colors. According to [Deane Brewster Judd and Günter Wyszecki in their book *Color in Business, Science and Industry* published in 1975](https://en.wikipedia.org/wiki/Color_vision#cite_note-business-21), humans can perceive about 10 millions colors. But humans can't tell the difference between very slight tints differences.
+
+Consequently, we want our service to group close tints as a single color. For example if we want to extract the two dominant colors of a landscape image with a blue sky and green grass, our service should group all the tints of blue in the sky as a single blue color and all the tints of green in the grass as a single green color.
+
+In order to achieve this programmatically, we have to use **clustering**.
+
+Clustering is a Machine Learning technique that involves the grouping of data points. Given a set of data points, we can use a clustering algorithm to classify each data point into a specific group. In theory, data points that are in the same group should have similar properties and/or features, while data points in different groups should have highly dissimilar properties and/or features. Clustering is a method of unsupervised learning and is a common technique for statistical data analysis used in many fields.
+
+An **unsupervised learning** method is a method in which we draw references from datasets consisting of input data without labeled responses. Generally, it is used as a process to find meaningful structure, explanatory underlying processes, generative features, and groupings inherent in a set of examples.
+
+There are multiple types of clustering algorithm. But k-means is the easiest to implement and use, and our data is simple enough and well distributed enough (generally) that k-means will be able to clusterize correctly the data, most of the time.
 
 ### Classifying colors: k-nearest neighbors
 
