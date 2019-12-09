@@ -210,6 +210,60 @@ An **unsupervised learning** method is a method in which we draw references from
 
 There are multiple types of clustering algorithm. But k-means is the easiest to implement and use, and our data is simple enough and well distributed enough (generally) that k-means will be able to clusterize correctly the data, most of the time.
 
+So, how does k-means work?
+
+1. To begin, we first select a number of classes/groups (later called clusters) to use and randomly initialize their respective center points, called centroids. To figure out the number of classes to use, it’s good to take a quick look at the data and try to identify any distinct groupings.
+
+2. Each data point is classified by computing the distance between that point and each group center, and then classifying the point to be in the group whose center is closest to it.
+
+3. Based on these classified points, we recompute the group center by taking the mean of all the vectors in the group.
+
+4. Repeat these steps for a set number of iterations or until the group centers don’t change much between iterations. You can also opt to randomly initialize the group centers a few times, and then select the run that looks like it provided the best results.
+
+![](https://shabal.in/visuals/kmeans/left.gif)
+
+*The centroids are chosen to be the 4 points of the left, and then they are recomputed trough each iteration.*
+
+![](https://stanford.edu/~cpiech/cs221/img/kmeansViz.png)
+
+*A sequential visualisation of k-means*
+
+K-Means has the advantage that it’s pretty fast, as all we’re really doing is computing the distances between points and group centers; very few computations! It thus has a linear complexity O(n).
+
+On the other hand, K-Means has a couple of disadvantages. Firstly, you have to select how many groups/classes there are.
+
+This isn’t always trivial and ideally with a clustering algorithm we’d want it to figure those out for us because the point of it is to gain some insight from the data. However in our case we decided that we want the user to provide the number of dominant colors they want to extract from the image, so it's all good.
+
+In our case, are data points are three-dimensional (RGB) so the clustering process would look like this:
+
+![](https://lh3.googleusercontent.com/-PC1vPUvCsKQ/WsjySpfx6uI/AAAAAAAABR8/gF5H-otSOtkAiY7HJUDoxv1HUDvBNtJ7QCLcBGAs/s640/data3d.gif)
+
+K-means also starts with a random choice of cluster centers and therefore it may yield different clustering results on different runs of the algorithm. Thus, **the results may not be repeatable and lack consistency**. K-means is **not deterministic**. Other cluster methods are more consistent.
+K-Medians is another clustering algorithm related to K-Means, except instead of recomputing the group center points using the mean we use the median vector of the group. This method is less sensitive to outliers (because of using the Median) but is much slower for larger datasets as sorting is required on each iteration when computing the Median vector.
+
+![](https://datasciencelab.files.wordpress.com/2014/01/kpp_n200_k31.png)
+
+*The choice of initial centroids can lead to completely different and wrong results*
+
+As shown below, even if the random initialization of centroids will lead to corrects results most of the time, it can sometimes completely mess up the clustering.
+
+To overcome the above-mentioned drawback we use K-means++. This algorithm ensures a smarter initialization of the centroids and improves the quality of the clustering. Apart from initialization, the rest of the algorithm is the same as the standard K-means algorithm. That is K-means++ is the standard K-means algorithm coupled with a smarter initialization of the centroids.
+
+The steps involved are:
+
+1. Randomly select the first centroid from the data points.
+2. For each data point compute its distance from the nearest, previously chosen centroid.
+3. Select the next centroid from the data points such that the probability of choosing a point as centroid is directly proportional to its distance from the nearest, previously chosen centroid. (i.e. the point having maximum distance from the nearest centroid is most likely to be selected next as a centroid)
+4. Repeat steps 2 and 3 until k centroids have been sampled
+
+By following the above procedure for initialization, we pick up centroids which are far away from one another. This increases the chances of initially picking up centroids that lie in different clusters.
+
+![](https://www.salientiastuff.com/images/k-means/five_kplusplus.png)
+
+*With this dataset, we can expect that by using k-means++ initialization, the initial centroids will be roughly associated with the apparent clusters nearly all the time, whereas the probability of this happening with the random initialization is much lower.*
+
+Since this is a easy improvement for k-means, we decided to use the k-means++ initialization method over the default, random one. Moreover, this method is available natively in the library we use.
+
 ### Classifying colors: k-nearest neighbors
 
 ## IV. Evaluation & Analysis
