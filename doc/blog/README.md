@@ -234,9 +234,9 @@ On the other hand, K-Means has a couple of disadvantages. Firstly, you have to s
 
 This isn’t always trivial and ideally with a clustering algorithm we’d want it to figure those out for us because the point of it is to gain some insight from the data. However in our case we decided that we want the user to provide the number of dominant colors they want to extract from the image, so it's all good.
 
-In our case, are data points are three-dimensional (RGB) so the clustering process would look like this:
-
 ![](https://lh3.googleusercontent.com/-PC1vPUvCsKQ/WsjySpfx6uI/AAAAAAAABR8/gF5H-otSOtkAiY7HJUDoxv1HUDvBNtJ7QCLcBGAs/s640/data3d.gif)
+
+*In our case, are data points are three-dimensional (RGB) so the clustering process would look like this.*
 
 K-means also starts with a random choice of cluster centers and therefore it may yield different clustering results on different runs of the algorithm. Thus, **the results may not be repeatable and lack consistency**. K-means is **not deterministic**. Other cluster methods are more consistent.
 K-Medians is another clustering algorithm related to K-Means, except instead of recomputing the group center points using the mean we use the median vector of the group. This method is less sensitive to outliers (because of using the Median) but is much slower for larger datasets as sorting is required on each iteration when computing the Median vector.
@@ -263,6 +263,84 @@ By following the above procedure for initialization, we pick up centroids which 
 *With this dataset, we can expect that by using k-means++ initialization, the initial centroids will be roughly associated with the apparent clusters nearly all the time, whereas the probability of this happening with the random initialization is much lower.*
 
 Since this is a easy improvement for k-means, we decided to use the k-means++ initialization method over the default, random one. Moreover, this method is available natively in the library we use.
+
+Let's run trough our usage of k-means in Python. Since Python is blessed with excellent Machine Learning libraries such as [scikit-learn](https://scikit-learn.org/stable/), we did not have to re-implement k-means from scratch, although it is possible to be done in a [few dozen lines of code](https://github.com/pavankalyan1997/Machine-learning-without-any-libraries/blob/master/2.Clustering/1.K_Means_Clustering/Kmeans.py) since the algorithm itself is pretty trivial.
+
+```py
+from sklearn.cluster import KMeans
+```
+
+Let's start by initializing k-means and our model:
+
+```py
+k = 3
+model = KMeans(n_clusters = k,
+                init = 'k-means++',
+                n_jobs = -1,
+                n_init = 10,
+                max_iter = 300,
+                algorithm='auto')
+```
+
+In the real application we get `k` from the API, but for simplicity here we will use `k=3` as the number of clusters, which means the number of centroids, so number of colors to extract.
+
+As explained above, we use k-means++ as our initialization method, the two other supported being random and a defined set of points as a `ndarray`.
+
+`n_jobs = -1` means we will use all the available CPU cores instead of 1. `n_init` is the number of time the k-means algorithm will be run with different centroid seeds. The final results will be the best output of n_init consecutive runs in terms of inertia. `max_iter` is the maximum number of iterations of the k-means algorithm for a single run.
+
+Then we compute our clusters using our transformed array image:
+
+```py
+model.fit(img)
+```
+
+This will take from a few milliseconds to a few seconds depending on the image size, the number of clusters and other parameters above such as the number of iterations.
+
+If we take our simple 3x3 image example from earlier:
+
+```py
+[[  0   0 255]
+ [  0   0 255]
+ [  0   0 255]
+ [  0 255   0]
+ [  0 255   0]
+ [  0 255   0]
+ [255   0   0]
+ [255   0   0]
+ [255   0   0]]
+```
+
+And compute its centroids (3), we get, as expected, red, green, and blue:
+
+```py
+print(model.cluster_centers_.astype(int))
+```
+
+```py
+[[255   0   0]
+ [  0 255   0]
+ [  0   0 255]]
+```
+
+Now, with 2 clusters, we get purple and green:
+
+```py
+[[127   0 127]
+ [  0 255   0]]
+```
+
+And with 4, red, green, blue and blue:
+
+```py
+ [[255   0   0]
+ [  0 255   0]
+ [  0   0 255]
+ [  0   0 255]]
+```
+
+That helps showing the importance in the number of clusters, however the effect is amplified by the fact that our dataset here is extremely small. In a real image, k-means would give more real tints.
+
+For example, a picture of a blue sky and `k=1` will give use some blue color. But with `k=2`, we will get a light blue and dark blue.
 
 ### Classifying colors: k-nearest neighbors
 
