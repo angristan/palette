@@ -172,9 +172,6 @@ Now that we have extracted the data we needed, we will be able to use it for our
 
 ## III. Methodology
 
-- Explaining your choice of algorithms (methods) - Explaining features or code (if any)
-- until Dec. 17
-
 ### Code architecture: how we built the website with Flask
 
 - Flask + Jinja
@@ -343,6 +340,51 @@ That helps showing the importance in the number of clusters, however the effect 
 For example, a picture of a blue sky and `k=1` will give use some blue color. But with `k=2`, we will get a light blue and dark blue.
 
 ### Classifying colors: k-nearest neighbors
+
+In this method. we want to classifying the colors from RGB form to the name of the colors.
+first,after we prepare the datasets, we need to extract the name and RGB values into 4 variables:
+
+```py
+color_names = data['name'].tolist()
+r = data['red'].tolist()
+g = data['green'].tolist()
+b = data['blue'].tolist()
+```
+
+the next step is we encode the dataset that we've been prepared, and we use the LaberEncoder() to help normalize labels such that they contain only values between 0 and n_classes-1
+
+```py
+le = preprocessing.LabelEncoder()
+```
+and then we fit the label encoder and return encoded labels, and we gather the result of RGB become 1 list using `zip()`
+
+```py
+        r_encoded = le.fit_transform(self.r)
+        g_encoded = le.fit_transform(self.g)
+        b_encoded = le.fit_transform(self.b)
+        self.features = list(zip(r_encoded,g_encoded,b_encoded))
+        self.labels = le.fit_transform(self.color_names)
+ ```
+
+after we encode all the datasets, we will create the train model of it.
+```py
+ def train_model(self):
+        self.encode_dataset()
+
+        self.target_colors = dict(zip(self.labels, self.color_names))
+
+        self.model = KNeighborsClassifier(n_neighbors=3)
+
+        self.model.fit(self.features, self.labels)
+ ```
+ 
+ we use `self.target_colors = dict(zip(self.labels, self.color_names))` to convert two lists become one dictionary, so each color name has label for itself. self_features and self_labels will be the train data of our program.
+ 
+ 
+ to call the KNN function, we use `self.model = KNeighborsClassifier(n_neighbors=3)` n_neighbors = 3 means that we do the prediction from 3 closest distance. and after that we do the data training (prediction).
+ 
+ 
+ 
 
 
 ## IV. Related Work (e.g., existing studies)
