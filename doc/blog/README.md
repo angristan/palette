@@ -360,7 +360,7 @@ For example, a picture of a blue sky and `k=1` will give use some blue color. Bu
  - Flask : we are using flask to our framework
  
  ### Similar Studies
- - [Machine Learning Basics with the K-Nearest Neighbors Algorithm] (https://towardsdatascience.com/machine-learning-basics-with-the-k-nearest-neighbors-algorithm-6a6e71d01761)
+ - [Machine Learning Basics with the K-Nearest Neighbors Algorithm](https://towardsdatascience.com/machine-learning-basics-with-the-k-nearest-neighbors-algorithm-6a6e71d01761)
  - [Color palette extraction with K-means clustering | Machine Learning from Scratch](https://www.curiousily.com/posts/color-palette-extraction-with-k-means-clustering/)
  
 ## VI. Conclusion: Discussion
