@@ -365,6 +365,9 @@ For example, a picture of a blue sky and `k=1` will give use some blue color. Bu
  
 ## VI. Conclusion: Discussion
 According to the project that we built, we combine the Supervised Learning and Unsupervised Learning algorithm to build this project. The first thing that we do is we extract the color palette from the image and then return thenm as hexadecimal representation in RGB values after that we assosiate the color values with the closest color name for each color, for example the color has hexadecimal value '#f44257' has the color name 'Magic Potion'. To extract the color palette and return it to hexadecimal, we are using k-means clustering Agorithm, and to assosiate the color value with the color name we are using k-nearest neighbor algorithm.
+
 For the dataset, we are using two different dataset. When we trying to extract the color palette we are using the image itself as the dataset. and the dataset that we use to assosiate the color value with the color name is the csv dataset from wikipedia called wikipedia_color_names.csv.
-To test the software, we have to upload the image and then the software will extract the color value of the image and those color value will be assosiated with the color name.
+
+To test the software, we have to upload the image and then the software will extract the color value of the image and those color value will be assosiated with the color name. 
+![](https://camo.githubusercontent.com/f1fbd6dc397f48e4667cefcd7a8c8c3cff8ed3eb/68747470733a2f2f692e696d6775722e636f6d2f5668424b5964412e706e67)
 
