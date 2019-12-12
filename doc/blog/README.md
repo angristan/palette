@@ -344,11 +344,8 @@ For example, a picture of a blue sky and `k=1` will give use some blue color. Bu
 
 ### Classifying colors: k-nearest neighbors
 
-## IV. Evaluation & Analysis
 
-- Graphs, tables, any statistics (if any)
-
-## V. Related Work (e.g., existing studies)
+## IV. Related Work (e.g., existing studies)
  ### Libraries in Use
  - OpenCV : this feature to read the images
  - Imutils : to processed the images
@@ -363,7 +360,7 @@ For example, a picture of a blue sky and `k=1` will give use some blue color. Bu
  - [Machine Learning Basics with the K-Nearest Neighbors Algorithm](https://towardsdatascience.com/machine-learning-basics-with-the-k-nearest-neighbors-algorithm-6a6e71d01761)
  - [Color palette extraction with K-means clustering | Machine Learning from Scratch](https://www.curiousily.com/posts/color-palette-extraction-with-k-means-clustering/)
  
-## VI. Conclusion: Discussion
+## V. Conclusion: Discussion
 According to the project that we built, we combine the Supervised Learning and Unsupervised Learning algorithm to build this project. The first thing that we do is we extract the color palette from the image and then return thenm as hexadecimal representation in RGB values after that we assosiate the color values with the closest color name for each color, for example the color has hexadecimal value '#f44257' has the color name 'Magic Potion'. To extract the color palette and return it to hexadecimal, we are using k-means clustering Agorithm, and to assosiate the color value with the color name we are using k-nearest neighbor algorithm.
 
 For the dataset, we are using two different dataset. When we trying to extract the color palette we are using the image itself as the dataset. and the dataset that we use to assosiate the color value with the color name is the csv dataset from wikipedia called wikipedia_color_names.csv.
