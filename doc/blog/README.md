@@ -15,13 +15,13 @@
 
 - Motivation: Why are you doing this? - What do you want to see at the end?
 
-The goal of our project is to help color-blinded people trough our service.
+The goal of our project is to help color-blinded people through our service.
 
 According to [Wikipedia](https://en.wikipedia.org/wiki/Color_blindness):
 
 > Color blindness, also known as color vision deficiency, is the decreased ability to see color or differences in color.
 
-Our service is a website available for free where users can upload a picture, and from that picture get the major tints of an image. The human ability to recognize colors is not absolute and can be tricked trough the use of tints. Color recognition is even harder for color blinded people, thus we want to help them by giving them the dominant color of an image, also known as color palette.
+Our service is a website available for free where users can upload a picture, and from that picture get the major tints of an image. The human ability to recognize colors is not absolute and can be tricked through the use of tints. Color recognition is even harder for color blinded people, thus we want to help them by giving them the dominant color of an image, also known as color palette.
 
 To achieve this, we use multiple algorithms. The first one will extract the major colors from an image (the number of colors is configurable), and it will return them as hexadecimal or RGB values (see below for RGB). The second one will associate the color values with the closest color name in English for each color.
 
@@ -31,7 +31,7 @@ To achieve this, we use multiple algorithms. The first one will extract the majo
 
 To analyze the colors of an image, we only need the image itself, which we can consider as our dataset. As we explain in `III.`, we use the k-means clustering algorithm for this matter.
 
-An image can be broken down into a two dimensional array for pixels, defined by its height and width, in pixels. Each pixel itself is a 3 dimensional array with a red, green and blue (RGB) value.
+An image can be broken down into a two-dimensional array for pixels, defined by its height and width, in pixels. Each pixel itself is a 3-dimensional array with a red, green and blue (RGB) value.
 
 The RGB color model is an additive color model in which red, green, and blue light are added together in various ways to reproduce a broad array of colors.
 
@@ -54,7 +54,7 @@ The RGB24 model is composed of 3 color channel each holding 8 bits of data, a va
 
 There are other color models but the second most popular is the CMY color model (for Cyan, Magenta and Yellow), which is a subtractive color model as opposed to RGB which is additive.
 
-To extract the dominant colors from an image we don't care about the placement of the pixels in the image, but only their color. Thus we can convert the image into an array of RGB values.
+To extract the dominant colors from an image we don't care about the placement of the pixels in the image, but only their color. Thus, we can convert the image into an array of RGB values.
 
 Let's take this image as a example:
 
@@ -220,7 +220,7 @@ So, how does k-means work?
 
 ![](https://shabal.in/visuals/kmeans/left.gif)
 
-*The centroids are chosen to be the 4 points of the left, and then they are recomputed trough each iteration.*
+*The centroids are chosen to be the 4 points of the left, and then they are recomputed through each iteration.*
 
 ![](https://stanford.edu/~cpiech/cs221/img/kmeansViz.png)
 
@@ -262,7 +262,7 @@ By following the above procedure for initialization, we pick up centroids which 
 
 Since this is a easy improvement for k-means, we decided to use the k-means++ initialization method over the default, random one. Moreover, this method is available natively in the library we use.
 
-Let's run trough our usage of k-means in Python. Since Python is blessed with excellent Machine Learning libraries such as [scikit-learn](https://scikit-learn.org/stable/), we did not have to re-implement k-means from scratch, although it is possible to be done in a [few dozen lines of code](https://github.com/pavankalyan1997/Machine-learning-without-any-libraries/blob/master/2.Clustering/1.K_Means_Clustering/Kmeans.py) since the algorithm itself is pretty trivial.
+Let's run through our usage of k-means in Python. Since Python is blessed with excellent Machine Learning libraries such as [scikit-learn](https://scikit-learn.org/stable/), we did not have to re-implement k-means from scratch, although it is possible to be done in a [few dozen lines of code](https://github.com/pavankalyan1997/Machine-learning-without-any-libraries/blob/master/2.Clustering/1.K_Means_Clustering/Kmeans.py) since the algorithm itself is pretty trivial.
 
 ```py
 from sklearn.cluster import KMeans
@@ -284,7 +284,7 @@ In the real application we get `k` from the API, but for simplicity here we will
 
 As explained above, we use k-means++ as our initialization method, the two other supported being random and a defined set of points as a `ndarray`.
 
-`n_jobs = -1` means we will use all the available CPU cores instead of 1. `n_init` is the number of time the k-means algorithm will be run with different centroid seeds. The final results will be the best output of n_init consecutive runs in terms of inertia. `max_iter` is the maximum number of iterations of the k-means algorithm for a single run.
+`n_jobs = -1` means we will use all the available CPU cores instead of 1. `n_init` is the number of times the k-means algorithm will be run with different centroid seeds. The final results will be the best output of n_init consecutive runs in terms of inertia. `max_iter` is the maximum number of iterations of the k-means algorithm for a single run.
 
 Then we compute our clusters using our transformed array image:
 
@@ -430,7 +430,7 @@ Regarding K-Nn, since we only use the k=1 nearest neighbor, our result can't be 
 
 ### Image compression with color quantization using k-means
 
-Among the related work in images with k-means, on of the most interesting is lossy image compression. It is easy to understand how this is a good application: lossy compression means we're loosing data, and with k-means we can reduce similar data. Thus with k-means and let's say `k-128`, we can reshape and image to array and then back to an image afterward, but with less color tints. This is a simple and very effective way to save a lot of space on an image. This has been done multiple times be wan can link for example [Ben Fradet's blog](https://benfradet.github.io/blog/2014/09/19/Using-KMeans-for-image-compression) where he uses Octave, a Matlab-like scientific programming language to use k-means. There is [similar work in Python](https://lmcaraig.com/color-quantization-using-k-means) as well, called color quantization.
+Among the related work in images with k-means, one of the most interesting is lossy image compression. It is easy to understand how this is a good application: lossy compression means we're losing data, and with k-means we can reduce similar data. Thus with k-means and let's say `k-128`, we can reshape and image to array and then back to an image afterward, but with less color tints. This is a simple and very effective way to save a lot of space on an image. This has been done multiple times be wan can link for example [Ben Fradet's blog](https://benfradet.github.io/blog/2014/09/19/Using-KMeans-for-image-compression) where he uses Octave, a Matlab-like scientific programming language to use k-means. There is [similar work in Python](https://lmcaraig.com/color-quantization-using-k-means) as well, called color quantization.
 
 ![](https://i.imgur.com/vdb9Ouk.png)
 
@@ -450,11 +450,11 @@ The process has been explained throughout this blog post but for completeness, w
 
 Our project combines a supervised learning and unsupervised learning algorithm. To extract the dominant colors as RGB or Hex, we are using k-means clustering, and then we associate these results with a color names dataset using the k-nearest neighbor algorithm.
 
-Overall this project was a really learning experience, because machine learning can be tough to get into especially considering how complex projects in the field can get. We chose this project because we could use k-means, which is a entry-level learning algorithm. As such, it is a learning material for a lot of machine learning students but also in related fields such as image processing and data science. The great advantage being that there is a lot of comprehensive learning material and implementations of similar projects. Also, we chose Python because of the high quality machine learning libraries available, and it has been a great asset.
-Luckily while working on this project we discovered we could also using a supervised learning algorithm called K-Nn to enhance our software.
+Overall this project was a really learning experience, because machine learning can be tough to get into especially considering how complex projects in the field can get. We chose this project because we could use k-means, which is an entry-level learning algorithm. As such, it is a learning material for a lot of machine learning students but also in related fields such as image processing and data science. The great advantage being that there is a lot of comprehensive learning material and implementations of similar projects. Also, we chose Python because of the high quality machine learning libraries available, and it has been a great asset.
+Luckily while working on this project we discovered we could also use a supervised learning algorithm called K-Nn to enhance our software.
 
 The most difficult part of our project was first understanding how to apply k-means to image processing. The fact that there is so much material on the subject can be quite confusing because each material has a slightly different goal and implementation can differ a lot: sometimes using libraries, sometimes from scratch. Once we understood K-means, it was easy to understand K-nn because it works in a related manner.
 
-Once we had all each algorithm working we just had to glue it up all together behind a website. Despite the apparent simplicity of our website, there is lot going on behind the scenes and we hope our blog post helped clear things up!
+Once we had all each algorithm working, we just had to glue it up all together behind a website. Despite the apparent simplicity of our website, there is lot going on behind the scenes and we hope our blog post helped clear things up!
 
 ![](https://i.imgur.com/VhBKYdA.png)
