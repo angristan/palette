@@ -30,7 +30,7 @@ class Knn:
 
         self.target_colors = dict(zip(self.labels, self.color_names))
 
-        self.model = KNeighborsClassifier(n_neighbors=3)
+        self.model = KNeighborsClassifier(n_neighbors=1)
 
         self.model.fit(self.features, self.labels)
 

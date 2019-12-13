@@ -8,7 +8,7 @@
 
 - Ni Putu Winda Ardiyanti
 - Asty Nabilah Izzaturrahmah
-- Stanislas Lange (angristan@pm.me)
+- Stanislas Lange
 - Stephane Rabenarisoa
 
 ## I. Introduction
@@ -26,7 +26,6 @@ Our service is a website available for free where users can upload a picture, an
 To achieve this, we use multiple algorithms. The first one will extract the major colors from an image (the number of colors is configurable), and it will return them as hexadecimal or RGB values (see below for RGB). The second one will associate the color values with the closest color name in English for each color.
 
 ## II. Datasets
-- Describing your dataset
 
 ### Extracting colors: converting an image into a usable dataset
 
@@ -225,7 +224,7 @@ So, how does k-means work?
 
 ![](https://stanford.edu/~cpiech/cs221/img/kmeansViz.png)
 
-*A sequential visualisation of k-means*
+*A sequential visualization of k-means*
 
 K-Means has the advantage that it’s pretty fast, as all we’re really doing is computing the distances between points and group centers; very few computations! It thus has a linear complexity O(n).
 
@@ -328,87 +327,134 @@ Now, with 2 clusters, we get purple and green:
  [  0 255   0]]
 ```
 
-And with 4, red, green, blue and blue:
-
-```py
- [[255   0   0]
- [  0 255   0]
- [  0   0 255]
- [  0   0 255]]
-```
-
 That helps showing the importance in the number of clusters, however the effect is amplified by the fact that our dataset here is extremely small. In a real image, k-means would give more real tints.
 
 For example, a picture of a blue sky and `k=1` will give use some blue color. But with `k=2`, we will get a light blue and dark blue.
 
-### Classifying colors: k-nearest neighbors
+### Classifying colors values as color names: k-nearest neighbors
 
-In this method. we want to classifying the colors from RGB form to the name of the colors.
-first,after we prepare the datasets, we need to extract the name and RGB values into 4 variables:
+The k-nearest neighbors (K-NN) algorithm is a simple, easy-to-implement supervised machine learning algorithm that can be used to solve both classification and regression problems.
+
+A supervised machine learning algorithm (as opposed to an unsupervised machine learning algorithm) is one that relies on labeled input data to learn a function that produces an appropriate output when given new unlabeled data.
+
+A classification problem has a discrete value as its output are discrete (true or false, 1 or 0). A regression problem has a real number (a number with a decimal point) as its output.
+
+![](https://www.jeremyjordan.me/content/images/2017/06/Screen-Shot-2017-06-17-at-9.30.39-AM-1.png)
+
+Here's how K-NN works:
+
+1. Load the data
+2. Initialize K to your chosen number of neighbors
+3. For each example in the data
+3.1 Calculate the distance between the query example and the current example from the data.
+3.2 Add the distance and the index of the example to an ordered collection
+4. Sort the ordered collection of distances and indices from smallest to largest (in ascending order) by the distances
+5. Pick the first K entries from the sorted collection
+6. Get the labels of the selected K entries
+7. If regression, return the mean of the K labels
+8. If classification, return the mode of the K labels
+
+![](https://res.cloudinary.com/dyd911kmh/image/upload/f_auto,q_auto:best/v1531424125/KNN_final_a1mrv9.png)
+
+Here we somewhat abused K-NN to have a simple manner to calculate the distance between two data points in a dataset.
+
+Remember our dataset earlier:
 
 ```py
-color_names = data['name'].tolist()
-r = data['red'].tolist()
-g = data['green'].tolist()
-b = data['blue'].tolist()
+             name      hex  red  green  blue    hue  hsl_s  hsl_l, hsv_s, hsv_v
+0   Absolute zero  #0048BA    0     72   186  217.0  100.0                 37.0
+1      Acid green  #B0BF1A  176    191    26   65.0   76.0                 43.0
+2            Aero  #7CB9E8  124    185   232  206.0   70.0                 70.0
+3       Aero blue  #C9FFE5  201    255   229  151.0  100.0                 89.0
+4  African violet  #B284BE  178    132   190  288.0   31.0                 63.0
 ```
 
-the next step is we encode the dataset that we've been prepared, and we use the LaberEncoder() to help normalize labels such that they contain only values between 0 and n_classes-1
+Now, we just want a simple manner of associating whatever color we got from k-means with a color name. To do so, we use K-NN with `k=1`. Why? Because we don't have duplicate labels in our dataset so the tint name of a said color is necessarily its closest neighbor. Using multiple neighbors can sometimes lead to the same result of another close tint name, but it's based on randomness, so it does not make sense for use.
+
+After preparing and dividing our dataset earlier, we have to do some boring work and encode it for the K-NN library we use:
 
 ```py
 le = preprocessing.LabelEncoder()
+
+r_encoded = le.fit_transform(r)
+g_encoded = le.fit_transform(g)
+b_encoded = le.fit_transform(b)
+features = list(zip(r_encoded,g_encoded,b_encoded))
+
+labels = le.fit_transform(color_names)
 ```
-and then we fit the label encoder and return encoded labels, and we gather the result of RGB become 1 list using `zip()`
+
+We combine all the R/G/B values into a single **features** list and the names into a list called **labels**.
+
+Finally, we convert our unencoded dataset into dict, which is key-value list in Python that will help use associate the K-NN result with the actual color name. The workflow is as follow: RGB value -> K-NN -> label id -> color name.
 
 ```py
-        r_encoded = le.fit_transform(self.r)
-        g_encoded = le.fit_transform(self.g)
-        b_encoded = le.fit_transform(self.b)
-        self.features = list(zip(r_encoded,g_encoded,b_encoded))
-        self.labels = le.fit_transform(self.color_names)
- ```
+target_colors = dict(zip(labels, color_names))
+```
 
-after we encode all the datasets, we will create the train model of it.
+Next, we process our model and classify all the colors of our dataset, (one RGB value = on distinct label).
+
 ```py
- def train_model(self):
-        self.encode_dataset()
+model = KNeighborsClassifier(n_neighbors=1)
 
-        self.target_colors = dict(zip(self.labels, self.color_names))
+model.fit(features, labels)
+```
 
-        self.model = KNeighborsClassifier(n_neighbors=3)
+After processing an image with k-means, we can send each tint to K-NN, and K-MM will predict the color name and return a string based on the dict we created earlier:
 
-        self.model.fit(self.features, self.labels)
- ```
- 
- we use `self.target_colors = dict(zip(self.labels, self.color_names))` to convert two lists become one dictionary, so each color name has label for itself. self_features and self_labels will be the train data of our program.
- 
- 
- to call the KNN function, we use `self.model = KNeighborsClassifier(n_neighbors=3)` n_neighbors = 3 means that we do the prediction from 3 closest distance. and after that we do the data training (prediction).
- 
- 
- 
+```py
+label_result = model.predict([[r,g,b]])[0]
+color_name = target_colors[int(label_result)]
+return color_name
+```
 
+That's it!
 
-## IV. Related Work (e.g., existing studies)
- ### Libraries in Use
- - OpenCV : this feature to read the images
- - Imutils : to processed the images
- - Sklearn : to do some machine learning algorithm ( Clustering and Nearest Neighbor)
- - Pandas : to read the dataset
- - Numpy : we use numpy to help us on analysis the dataset
- - Bootstrap : we use bootsrap in create the website
- ### framework
- - Flask : we are using flask to our framework
- 
- ### Similar Studies
- - [Machine Learning Basics with the K-Nearest Neighbors Algorithm](https://towardsdatascience.com/machine-learning-basics-with-the-k-nearest-neighbors-algorithm-6a6e71d01761)
- - [Color palette extraction with K-means clustering | Machine Learning from Scratch](https://www.curiousily.com/posts/color-palette-extraction-with-k-means-clustering/)
- 
-## V. Conclusion: Discussion
-According to the project that we built, we combine the Supervised Learning and Unsupervised Learning algorithm to build this project. The first thing that we do is we extract the color palette from the image and then return thenm as hexadecimal representation in RGB values after that we assosiate the color values with the closest color name for each color, for example the color has hexadecimal value '#f44257' has the color name 'Magic Potion'. To extract the color palette and return it to hexadecimal, we are using k-means clustering Agorithm, and to assosiate the color value with the color name we are using k-nearest neighbor algorithm.
+## IV. Evaluation & Analysis
 
-For the dataset, we are using two different dataset. When we trying to extract the color palette we are using the image itself as the dataset. and the dataset that we use to assosiate the color value with the color name is the csv dataset from wikipedia called wikipedia_color_names.csv.
+It it difficult to evaluate the precision of k-means because the point of an unsupervised learning algorithm is to detect previously unknown patters of data in a dataset. Moreover, we cannot compare the resulting clusters into pre-made labels because we don't use k-means to precisely classify the data but to get an average of the major data points to get the tints.
 
-To test the software, we have to upload the image and then the software will extract the color value of the image and those color value will be assosiated with the color name. 
-![](https://camo.githubusercontent.com/f1fbd6dc397f48e4667cefcd7a8c8c3cff8ed3eb/68747470733a2f2f692e696d6775722e636f6d2f5668424b5964412e706e67)
+If we had labels associated with our dataset we could use something called cluster purity.
 
+According to a [Stanford University professor](https://nlp.stanford.edu/IR-book/html/htmledition/evaluation-of-clustering-1.html):
+
+> To compute purity, each cluster is assigned to the class which is most frequent in the cluster, and then the accuracy of this assignment is measured by counting the number of correctly assigned documents and dividing by N.
+
+But that required to have pre-made clusters or labels, which we don't have.
+
+The best evaluation we can do is to eyeball to result and roughly determine if the results match the image. For instance during the implementation a bug mixed the order of the RGB values in the results so the color were wrong, and even do we can't really evaluate tints we could roughly say that these results were wrong.
+
+Regarding K-Nn, since we only use the k=1 nearest neighbor, our result can't be biased since our dataset covers the whole RGB spectrum. If we had less colors or multiple values for the same label, result could have been biased, but here if we assume that our dataset is 100% correct, then all the results are 100% correct.
+
+## V. Related Work
+
+### Image compression with color quantization using k-means
+
+Among the related work in images with k-means, on of the most interesting is lossy image compression. It is easy to understand how this is a good application: lossy compression means we're loosing data, and with k-means we can reduce similar data. Thus with k-means and let's say `k-128`, we can reshape and image to array and then back to an image afterward, but with less color tints. This is a simple and very effective way to save a lot of space on an image. This has been done multiple times be wan can link for example [Ben Fradet's blog](https://benfradet.github.io/blog/2014/09/19/Using-KMeans-for-image-compression) where he uses Octave, a Matlab-like scientific programming language to use k-means. There is [similar work in Python](https://lmcaraig.com/color-quantization-using-k-means) as well, called color quantization.
+
+![](https://i.imgur.com/vdb9Ouk.png)
+
+### Image segmentation using k-means clustering
+
+Another application is image segmentation, which aims at detecting major objects in an image based of colors. Obviously this can be biased if the colors are not distinct enough, but also based on lightning, etc.
+
+We found this implementation in Python by [Nagesh Singh Chauhan](https://towardsdatascience.com/introduction-to-image-segmentation-with-k-means-clustering-83fd0a9e2fc3).
+
+![](https://miro.medium.com/max/1398/1*XbIyaCstQ2-k0dSmdDYhog.png)
+
+### Extracting dominant colors from an image with k-means
+
+The process has been explained throughout this blog post but for completeness, we found other implementation in [Javascript](https://towardsdatascience.com/extracting-colours-from-an-image-using-k-means-clustering-9616348712be), in [R](http://www.milanor.net/blog/build-color-palette-from-image-with-paletter/), in [Python](https://buzzrobot.com/dominant-colors-in-an-image-using-k-means-clustering-3c7af4622036) and [Go](https://github.com/mccutchen/palettor).
+
+## VI. Conclusion
+
+Our project combines a supervised learning and unsupervised learning algorithm. To extract the dominant colors as RGB or Hex, we are using k-means clustering, and then we associate these results with a color names dataset using the k-nearest neighbor algorithm.
+
+Overall this project was a really learning experience, because machine learning can be tough to get into especially considering how complex projects in the field can get. We chose this project because we could use k-means, which is a entry-level learning algorithm. As such, it is a learning material for a lot of machine learning students but also in related fields such as image processing and data science. The great advantage being that there is a lot of comprehensive learning material and implementations of similar projects. Also, we chose Python because of the high quality machine learning libraries available, and it has been a great asset.
+Luckily while working on this project we discovered we could also using a supervised learning algorithm called K-Nn to enhance our software.
+
+The most difficult part of our project was first understanding how to apply k-means to image processing. The fact that there is so much material on the subject can be quite confusing because each material has a slightly different goal and implementation can differ a lot: sometimes using libraries, sometimes from scratch. Once we understood K-means, it was easy to understand K-nn because it works in a related manner.
+
+Once we had all each algorithm working we just had to glue it up all together behind a website. Despite the apparent simplicity of our website, there is lot going on behind the scenes and we hope our blog post helped clear things up!
+
+![](https://i.imgur.com/VhBKYdA.png)
