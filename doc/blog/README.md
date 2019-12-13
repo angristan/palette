@@ -1,5 +1,7 @@
 # Image color palette extraction for color-blinded people
 
+[Video link on Youtube](https://youtu.be/85Uj3dup1YI)
+
 ## Team
 
 *All the members are from the Department of Computer Science at Hanyang University (South Korea)*
@@ -172,9 +174,6 @@ Now that we have extracted the data we needed, we will be able to use it for our
 
 ## III. Methodology
 
-- Explaining your choice of algorithms (methods) - Explaining features or code (if any)
-- until Dec. 17
-
 ### Code architecture: how we built the website with Flask
 
 - Flask + Jinja
@@ -344,12 +343,72 @@ For example, a picture of a blue sky and `k=1` will give use some blue color. Bu
 
 ### Classifying colors: k-nearest neighbors
 
-## IV. Evaluation & Analysis
+In this method. we want to classifying the colors from RGB form to the name of the colors.
+first,after we prepare the datasets, we need to extract the name and RGB values into 4 variables:
 
-- Graphs, tables, any statistics (if any)
+```py
+color_names = data['name'].tolist()
+r = data['red'].tolist()
+g = data['green'].tolist()
+b = data['blue'].tolist()
+```
 
-## V. Related Work (e.g., existing studies)
+the next step is we encode the dataset that we've been prepared, and we use the LaberEncoder() to help normalize labels such that they contain only values between 0 and n_classes-1
 
-- Tools, libraries, blogs, or any documentation that you have used to do this project.
+```py
+le = preprocessing.LabelEncoder()
+```
+and then we fit the label encoder and return encoded labels, and we gather the result of RGB become 1 list using `zip()`
 
-## VI. Conclusion: Discussion
+```py
+        r_encoded = le.fit_transform(self.r)
+        g_encoded = le.fit_transform(self.g)
+        b_encoded = le.fit_transform(self.b)
+        self.features = list(zip(r_encoded,g_encoded,b_encoded))
+        self.labels = le.fit_transform(self.color_names)
+ ```
+
+after we encode all the datasets, we will create the train model of it.
+```py
+ def train_model(self):
+        self.encode_dataset()
+
+        self.target_colors = dict(zip(self.labels, self.color_names))
+
+        self.model = KNeighborsClassifier(n_neighbors=3)
+
+        self.model.fit(self.features, self.labels)
+ ```
+ 
+ we use `self.target_colors = dict(zip(self.labels, self.color_names))` to convert two lists become one dictionary, so each color name has label for itself. self_features and self_labels will be the train data of our program.
+ 
+ 
+ to call the KNN function, we use `self.model = KNeighborsClassifier(n_neighbors=3)` n_neighbors = 3 means that we do the prediction from 3 closest distance. and after that we do the data training (prediction).
+ 
+ 
+ 
+
+
+## IV. Related Work (e.g., existing studies)
+ ### Libraries in Use
+ - OpenCV : this feature to read the images
+ - Imutils : to processed the images
+ - Sklearn : to do some machine learning algorithm ( Clustering and Nearest Neighbor)
+ - Pandas : to read the dataset
+ - Numpy : we use numpy to help us on analysis the dataset
+ - Bootstrap : we use bootsrap in create the website
+ ### framework
+ - Flask : we are using flask to our framework
+ 
+ ### Similar Studies
+ - [Machine Learning Basics with the K-Nearest Neighbors Algorithm](https://towardsdatascience.com/machine-learning-basics-with-the-k-nearest-neighbors-algorithm-6a6e71d01761)
+ - [Color palette extraction with K-means clustering | Machine Learning from Scratch](https://www.curiousily.com/posts/color-palette-extraction-with-k-means-clustering/)
+ 
+## V. Conclusion: Discussion
+According to the project that we built, we combine the Supervised Learning and Unsupervised Learning algorithm to build this project. The first thing that we do is we extract the color palette from the image and then return thenm as hexadecimal representation in RGB values after that we assosiate the color values with the closest color name for each color, for example the color has hexadecimal value '#f44257' has the color name 'Magic Potion'. To extract the color palette and return it to hexadecimal, we are using k-means clustering Agorithm, and to assosiate the color value with the color name we are using k-nearest neighbor algorithm.
+
+For the dataset, we are using two different dataset. When we trying to extract the color palette we are using the image itself as the dataset. and the dataset that we use to assosiate the color value with the color name is the csv dataset from wikipedia called wikipedia_color_names.csv.
+
+To test the software, we have to upload the image and then the software will extract the color value of the image and those color value will be assosiated with the color name. 
+![](https://camo.githubusercontent.com/f1fbd6dc397f48e4667cefcd7a8c8c3cff8ed3eb/68747470733a2f2f692e696d6775722e636f6d2f5668424b5964412e706e67)
+
