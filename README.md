@@ -4,7 +4,7 @@ Palette is a website where you can upload an image and get the dominant colors (
 
 This is a project for the *Introduction to Artificial Intelligence* at Hanyang University under professor Youngjoon Won.
 
-Motivation, technical details and methodology cam be found in our so-called "[blog post](doc/blog)".
+Motivation, technical details and methodology cam be found in our so-called "[blog post](doc/blog)" as part the [assignment](doc/instructions-assignement-blog-post-video.pdf).
 
 ![](https://i.imgur.com/VhBKYdA.png)
 
