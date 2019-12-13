@@ -173,12 +173,17 @@ Now that we have extracted the data we needed, we will be able to use it for our
 
 ## III. Methodology
 
-### Code architecture: how we built the website with Flask
+### Tools and libraries used
 
-- Flask + Jinja
-- Frontend JS + API
-- Bootstrap
-- Heroku with GitHub Actions
+- Flask: Python backend and API backend
+- Bootsrap: frontend styling
+- jQuery: handling of AJAX queries and DOM manipulation
+- sklearn: Machine Learning library we used for k-means and K-NN
+- pandas: data analysis library, used for handling the CSV dataset
+- OpenCV: computer vision library, used to manipulate the image
+- imutils: wrapper around OpenCV
+- Heroku: Hosting of the flask application
+- GitHub Action: CI and auto deploy to Heroku
 
 ### Extracting colors: k-means clustering
 
