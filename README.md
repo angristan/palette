@@ -7,3 +7,17 @@ This is a project for the *Introduction to Artificial Intelligence* at Hanyang U
 Motivation, technical details and methodology cam be found in our so-called "[blog post](doc/blog)".
 
 ![](https://i.imgur.com/VhBKYdA.png)
+
+
+## Setup
+
+Requirements: Python 3
+
+```sh
+git clone git@github.com:angristan/palette.git
+cd palette
+pip install -r requirements.txt
+flask run
+```
+
+Palette is running on http://localhost:5000/.
