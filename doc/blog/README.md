@@ -1,7 +1,5 @@
 # Image color palette extraction for color-blinded people
 
-[Video link on Youtube](https://youtu.be/85Uj3dup1YI)
-
 ## Team
 
 *All the members are from the Department of Computer Science at Hanyang University (South Korea)*
