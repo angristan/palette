@@ -3,7 +3,7 @@ opencv-python==4.1.2.30
 opencv-python-headless==4.1.2.30
 Werkzeug==0.16.0
 sklearn==0.0
-python-dotenv==0.10.3
+python-dotenv==0.13.0
 Flask-WTF==0.14.3
 WTForms==2.3.1
 Flask-Uploads==0.2.1
