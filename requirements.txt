@@ -5,7 +5,7 @@ Werkzeug==0.16.0
 sklearn==0.0
 python-dotenv==0.10.3
 Flask-WTF==0.14.3
-WTForms==2.2.1
+WTForms==2.3.1
 Flask-Uploads==0.2.1
 numpy==1.18.4
 Pillow==6.2.1
