@@ -1,6 +1,5 @@
 import cv2
 import imutils
-
 from sklearn.cluster import KMeans
 from webcolors import rgb_to_hex
 
@@ -18,7 +17,6 @@ class Kmeans:
         # and improve the quality of the clustering
         self.model = KMeans(n_clusters = self.clusters,
                             init = 'k-means++',
-                            n_jobs = -1,
                             n_init = 10,
                             max_iter = 300,
                             algorithm='elkan')

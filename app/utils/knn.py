@@ -1,6 +1,7 @@
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn import preprocessing
 import pandas as pd
+from sklearn import preprocessing
+from sklearn.neighbors import KNeighborsClassifier
+
 
 class Knn:
 

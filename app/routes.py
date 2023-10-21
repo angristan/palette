@@ -1,17 +1,14 @@
 import os
-import numbers
 
-from flask import render_template, request, abort
-from flask.helpers import url_for
-from werkzeug import redirect, secure_filename
+from flask import render_template, request
+from flask.json import jsonify
+from webcolors import hex_to_rgb
+from werkzeug.utils import secure_filename
 
 from app import app
-from app import images
 from app.forms import UploadForm
 from app.utils.kmeans import Kmeans
 from app.utils.knn import Knn
-from webcolors import hex_to_rgb
-from flask.json import jsonify
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 

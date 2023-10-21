@@ -1,10 +1,12 @@
 import logging
 import os
-from flask_uploads import UploadSet, IMAGES, configure_uploads
-from flask import Flask
-from config import Config
-from flask_bootstrap import Bootstrap
 from logging.handlers import RotatingFileHandler
+
+from flask import Flask
+from flask_bootstrap import Bootstrap4
+from flask_uploads import IMAGES, UploadSet, configure_uploads
+
+from config import Config
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -24,7 +26,7 @@ else:
     file_handler.setLevel(logging.INFO)
     app.logger.addHandler(file_handler)
 
-bootstrap = Bootstrap(app)
+bootstrap = Bootstrap4(app)
 
 images = UploadSet('images', IMAGES)
 configure_uploads(app, images)
