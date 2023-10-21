@@ -1,5 +1,4 @@
 Flask==3.0.0
-opencv-python==4.8.1.78
 opencv-python-headless==4.8.1.78
 Werkzeug==3.0.0
 sklearn==0.0
