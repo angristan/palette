@@ -7,9 +7,11 @@ from app import images
 
 
 class UploadForm(FlaskForm):
-    upload = FileField('Choose an image...', validators=[
-        FileRequired(),
-        FileAllowed(images, 'Images only!')
-    ])
-    clusters = IntegerField('clusters',)
-    submit = SubmitField('Analyse image')
+    upload = FileField(
+        "Choose an image...",
+        validators=[FileRequired(), FileAllowed(images, "Images only!")],
+    )
+    clusters = IntegerField(
+        "clusters",
+    )
+    submit = SubmitField("Analyse image")

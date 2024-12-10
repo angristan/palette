@@ -15,11 +15,13 @@ class Kmeans:
         # the number of clusters indicate how many leading colors we want (k of k-means)
         # we use k-means++ to ensure ensures a smarter initialization of the centroids
         # and improve the quality of the clustering
-        self.model = KMeans(n_clusters = self.clusters,
-                            init = 'k-means++',
-                            n_init = 10,
-                            max_iter = 300,
-                            algorithm='elkan')
+        self.model = KMeans(
+            n_clusters=self.clusters,
+            init="k-means++",
+            n_init=10,
+            max_iter=300,
+            algorithm="elkan",
+        )
         self.model.fit(self.img)
 
     def transform_img(self):
