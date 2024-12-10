@@ -46,7 +46,7 @@ The RGB24 model is composed of 3 color channel each holding 8 bits of data, a va
 
 24 bits is 256<sup>3</sup>. With this system, 16,777,216 (256<sup>3</sup> or 2<sup>24</sup>) discrete combinations of R, G, and B values are allowed, providing millions of different (though not necessarily distinguishable) hue, saturation and lightness shades, which results in different colors, or tints.
 
-![](https://i.imgur.com/QzK05y0.png)
+![](../images/parrot.jpg)
 
 *Images with pixels of different bit depth also known as color depth. The standard is 24-bits.*
 
@@ -56,7 +56,7 @@ To extract the dominant colors from an image we don't care about the placement o
 
 Let's take this image as a example:
 
-![](https://i.imgur.com/8EfDXN1.png)
+![](../images/3_3.png)
 
 *3x3 image*
 
@@ -189,7 +189,7 @@ To explain why we chose k-means for our project we have to go back to what we tr
 
 To understand the extent of the spectrum, let's look at this rough example:
 
-![](https://i.imgur.com/CWYX7iD.png)
+![](../images/rgb_example.png)
 
 One would classify both of these color as blue, right? The second color has +100 to each color channel, so that means there is 100<sup>3</sup> = 1 million tints between these two blue colors!
 
@@ -435,7 +435,7 @@ Regarding K-Nn, since we only use the k=1 nearest neighbor, our result can't be 
 
 Among the related work in images with k-means, one of the most interesting is lossy image compression. It is easy to understand how this is a good application: lossy compression means we're losing data, and with k-means we can reduce similar data. Thus with k-means and let's say `k-128`, we can reshape and image to array and then back to an image afterward, but with less color tints. This is a simple and very effective way to save a lot of space on an image. This has been done multiple times be wan can link for example [Ben Fradet's blog](https://benfradet.github.io/blog/2014/09/19/Using-KMeans-for-image-compression) where he uses Octave, a Matlab-like scientific programming language to use k-means. There is [similar work in Python](https://lmcaraig.com/color-quantization-using-k-means) as well, called color quantization.
 
-![](https://i.imgur.com/vdb9Ouk.png)
+![](../images/kmeans_rgb.png)
 
 ### Image segmentation using k-means clustering
 
@@ -460,4 +460,4 @@ The most difficult part of our project was first understanding how to apply k-me
 
 Once we had all each algorithm working, we just had to glue it up all together behind a website. Despite the apparent simplicity of our website, there is lot going on behind the scenes and we hope our blog post helped clear things up!
 
-![](https://i.imgur.com/VhBKYdA.png)
+![](../images/app.png)
