@@ -6,7 +6,7 @@ This is a project for the *Introduction to Artificial Intelligence* at Hanyang U
 
 Motivation, technical details and methodology cam be found in our so-called "[blog post](docs/blog)" as part the [assignment](docs/instructions-assignement-blog-post-video.pdf).
 
-![](doc/images/app.png)
+![](docs/images/app.png)
 
 
 ## Setup
